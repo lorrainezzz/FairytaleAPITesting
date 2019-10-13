@@ -54,4 +54,35 @@ describe("Donations", () => {
             });
         });
     });
+
+    describe("POST /donations", () => {
+        it("should return confirmation message and update datastore", () => {
+            const donation = {
+                paymenttype: "Visa",
+                amount: 1200,
+                upvotes: 0
+            };
+            return request(server)
+                .post("/donations")
+                .send(donation)
+                .expect(200)
+                .expect({ message: "Donation Added!" });
+        });
+        after(() => {
+            return request(server)
+                .get("/donations")
+                .expect(200)
+                .then(res => {
+                    expect(res.body.length).equals(3);
+                    const result = _.map(res.body, donation => {
+                        return {
+                            paymenttype: donation.paymenttype,
+                            amount: donation.amount
+                        };
+                    });
+                    expect(result).to.deep.include({ paymenttype: "Visa", amount: 1200 });
+                });
+        });
+    });
+
 });

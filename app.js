@@ -56,6 +56,9 @@ if (app.get('env') === 'dev') {
         });
     });
 }
+if (process.env.NODE_ENV !== 'test') {
+    app.use(logger('dev'));
+}
 
 // production error handler
 // no stacktraces leaked to user
