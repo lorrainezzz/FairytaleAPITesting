@@ -16,5 +16,9 @@
     "morgan": "~1.5.3",
     "serve-favicon": "~2.2.1"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "chai": "^4.0.2",
+    "mocha": "^6.2.0",
+    "supertest": "^4.0.2"
+  }
 }
