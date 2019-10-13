@@ -113,7 +113,12 @@ describe("Donations", () => {
             });
         });
         describe("when the id is invalid", () => {
-            // TODO
+            it("should return a 404 and a message for invalid donation id", () => {
+                return request(server)
+                    .put("/donations/1100001/vote")
+                    .expect(404)
+                    .expect({ message: "Invalid Donation Id!" });
+            });
         });
     });  // end-PUT
 
