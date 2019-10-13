@@ -141,4 +141,29 @@ describe("Donations", () => {
         });
     });  // end-PUT
 
+    describe("DELETE /donations/:id", () => {
+        describe("when the id is valid", () => {
+            it("should return the delete message and update datastore", () => {
+                request(server)
+                    .delete(`/donations/${datastore[0].id}`)
+                    .set("Accept", "application/json")
+                    .expect("Content-Type", /json/)
+                    .expect(200)
+                    .expect({ message: "Donation Deleted!" });
+            });
+        });
+        describe("when the id is invalid", () => {
+            it("should return the NOT found message", done => {
+                request(server)
+                    .get("/donations/9999")
+                    .set("Accept", "application/json")
+                    .expect("Content-Type", /json/)
+                    .expect(200)
+                    .expect({ message: "Donation NOT Found!" }, (err, res) => {
+                        done(err);
+                    });
+            });
+        });
+    });
+
 });
