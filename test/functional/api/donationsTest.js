@@ -85,4 +85,36 @@ describe("Donations", () => {
         });
     });
 
+    describe("PUT /donations/:id/vote", () => {
+        describe("when the id is valid", () => {
+            it("should return a message and the donation upvoted by 1", () => {
+                return request(server)
+                    .put(`/donations/1000001/vote`)
+                    .expect(200)
+                    .then(resp => {
+                        expect(resp.body).to.include({
+                            message: "Donation Successfully Upvoted!"
+                        });
+                        expect(resp.body.data).to.include({
+                            id: 1000001,
+                            upvotes: 3
+                        });
+                    });
+            });
+            after(() => {
+                return request(server)
+                    .get(`/donations/${datastore[1].id}`)
+                    .set("Accept", "application/json")
+                    .expect("Content-Type", /json/)
+                    .expect(200)
+                    .then(res => {
+                        expect(res.body).to.include({ id: datastore[1].id, upvotes: 3 });
+                    });
+            });
+        });
+        describe("when the id is invalid", () => {
+            // TODO
+        });
+    });  // end-PUT
+
 });
