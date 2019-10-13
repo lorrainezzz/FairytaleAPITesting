@@ -26,4 +26,32 @@ describe("Donations", () => {
                 });
         });
     });
+
+    describe("GET /donations/:id", () => {
+        describe("when the id is valid", () => {
+            it("should return the matching donation", done => {
+                request(server)
+                    .get(`/donations/${datastore[0].id}`)
+                    .set("Accept", "application/json")
+                    .expect("Content-Type", /json/)
+                    .expect(200)
+                    .end((err, res) => {
+                        expect(res.body).to.deep.include(datastore[0]);
+                        done(err);
+                    });
+            });
+        });
+        describe("when the id is invalid", () => {
+            it("should return the NOT found message", done => {
+                request(server)
+                    .get("/donations/9999")
+                    .set("Accept", "application/json")
+                    .expect("Content-Type", /json/)
+                    .expect(200)
+                    .expect({ message: "Donation NOT Found!" }, (err, res) => {
+                        done(err);
+                    });
+            });
+        });
+    });
 });
